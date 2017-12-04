@@ -1,0 +1,20 @@
+class AESEncrypt(){
+
+	public static function pkcs5_pad ($text, $blocksize)
+    {
+        $pad = $blocksize - (strlen($text) % $blocksize);
+        return $text . str_repeat(chr($pad), $pad);
+    }
+    
+    public static function AESEncrypt($plaintext, $encKey, $encIv){
+        # creates a cipher text compatible with AES (Rijndael block size = 128)
+        # to keep the text confidential 
+        
+        $plaintext = self::pkcs5_pad($plaintext,16);
+        $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $encKey, $plaintext, MCRYPT_MODE_CBC, $encIv);
+        
+        # binary to hexadecimal
+        return bin2hex($ciphertext);
+        
+    }
+}
